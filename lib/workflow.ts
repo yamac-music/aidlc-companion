@@ -16,7 +16,7 @@ export type Snapshot = {
   lastEventAt: string | null;
   stateUpdatedAt: string | null;
   fetchedAt: string;
-  stages: { slug: string; name: string; englishName?: string; phase: string; status: WorkflowState }[];
+  stages: { slug: string; name: string; englishName?: string; lead?: string | null; phase: string; status: WorkflowState }[];
   artifacts: { path: string; name: string; unit: string | null; updatedAt: string }[];
   events: { id: string; type: string; label: string; stage: string | null; unit: string | null; at: string }[];
   review: { verdict: string; at: string; unit: string | null } | null;

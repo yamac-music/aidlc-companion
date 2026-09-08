@@ -42,7 +42,7 @@ export function parseState(text, graph = []) {
     const row = line.match(/^- \[([ x?RS-])\]\s+([a-z0-9-]+)\s+[—–-]\s+(EXECUTE|SKIP)/);
     if (!row) continue;
     const definition = graph.find((node) => node.slug === row[2]);
-    stages.push({ slug: row[2], name: names[row[2]] ?? definition?.name ?? row[2], englishName: definition?.name ?? row[2], phase: definition?.phase ?? phase, status: row[3] === 'SKIP' ? 'skipped' : markers[row[1]] });
+    stages.push({ slug: row[2], name: names[row[2]] ?? definition?.name ?? row[2], englishName: definition?.name ?? row[2], lead: definition?.lead_agent ?? null, phase: definition?.phase ?? phase, status: row[3] === 'SKIP' ? 'skipped' : markers[row[1]] });
   }
   if (!values['Status'] || !values['Current Stage'] || !stages.length) throw new Error('INVALID_STATE');
   return { values, stages };

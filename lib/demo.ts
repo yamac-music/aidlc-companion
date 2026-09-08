@@ -4,12 +4,12 @@ export type DemoScene = keyof typeof demoScenes;
 export function demoSnapshot(scene: DemoScene): Snapshot {
   const at = '2026-09-06T10:00:00Z';
   const stages: Snapshot['stages'] = [
-    { slug: 'workspace-detection', englishName: 'Workspace Detection', name: '既存環境の確認', phase: 'initialization', status: 'completed' },
-    { slug: 'scope-definition', englishName: 'Scope Definition', name: '範囲の決定', phase: 'ideation', status: 'completed' },
-    { slug: 'delivery-planning', englishName: 'Delivery Planning', name: '実行計画', phase: 'inception', status: 'completed' },
-    { slug: 'functional-design', englishName: 'Functional Design', name: '機能設計', phase: 'construction', status: scene === 'gate' ? 'awaiting' : scene === 'revise' ? 'revising' : scene === 'done' ? 'completed' : 'active' },
-    { slug: 'nfr-requirements', englishName: 'NFR Requirements', name: '品質条件の整理', phase: 'construction', status: scene === 'done' ? 'skipped' : 'pending' },
-    { slug: 'deployment-execution', englishName: 'Deployment Execution', name: '配備', phase: 'operation', status: 'skipped' },
+    { slug: 'workspace-detection', lead: 'orchestrator', englishName: 'Workspace Detection', name: '既存環境の確認', phase: 'initialization', status: 'completed' },
+    { slug: 'scope-definition', lead: 'aidlc-product-agent', englishName: 'Scope Definition', name: '範囲の決定', phase: 'ideation', status: 'completed' },
+    { slug: 'delivery-planning', lead: 'aidlc-delivery-agent', englishName: 'Delivery Planning', name: '実行計画', phase: 'inception', status: 'completed' },
+    { slug: 'functional-design', lead: 'aidlc-architect-agent', englishName: 'Functional Design', name: '機能設計', phase: 'construction', status: scene === 'gate' ? 'awaiting' : scene === 'revise' ? 'revising' : scene === 'done' ? 'completed' : 'active' },
+    { slug: 'nfr-requirements', lead: 'aidlc-architect-agent', englishName: 'NFR Requirements', name: '品質条件の整理', phase: 'construction', status: scene === 'done' ? 'skipped' : 'pending' },
+    { slug: 'deployment-execution', lead: 'aidlc-pipeline-deploy-agent', englishName: 'Deployment Execution', name: '配備', phase: 'operation', status: 'skipped' },
   ];
   return {
     source: 'demo', project: 'サンプルプロジェクト', version: '2.x', space: 'default', intent: 'サンプルUI', scope: 'mvp',
