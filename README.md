@@ -4,9 +4,11 @@ AI-DLC v2向けの非公式・読み取り専用ビューアです。進行記�
 
 ## 起動
 
-Node.js 22.13以上とnpmを使用します。
+ローカル専用の試用版です。Node.js 22.13以上とnpmを使用します。macOSで検証しています。Windows・Linuxの動作は未検証です。
 
 ```sh
+git clone https://github.com/yamac-music/aidlc-companion.git
+cd aidlc-companion
 npm ci
 npm start
 ```
@@ -87,3 +89,9 @@ npm run build
 ## 公開・共有する範囲
 
 ソースコードのみを共有してください。`.local/`、`.env*`、ログ、キャッシュ、監視対象のAI-DLC記録は含めません。画面やスクリーンショットには、接続先から取得した作業名・文書名・文書本文が表示されます。紹介用には架空データのデモを使用してください。
+
+依存ライブラリと同梱コードの通知は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) を参照してください。
+
+## ライセンス
+
+MIT。独自コードと同梱キャラクターに適用します。第三者コードには各ライセンスが適用されます。[LICENSE](LICENSE) を参照してください。

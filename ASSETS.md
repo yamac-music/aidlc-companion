@@ -17,3 +17,5 @@
 > Text (verbatim): none; notebook must be completely blank
 > Constraints: exactly one character and one blank notebook; preserve actual alpha transparency; simple silhouette; no text, no logo, no scenery, no props beyond the cap and notebook
 > Avoid: extra characters, animals, tools, desk, background color, white matte, checkerboard baked into the image, shadows outside the character, lettering, symbols, watermark, cropped body, side or three-quarter view, exaggerated expression, busy detail
+
+本リポジトリでのキャラクター素材の提供条件はMITライセンスです。生成素材であり、独占性を保証するものではありません。
