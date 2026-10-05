@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, writeFile, readFile, rm, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { parseState, parseAudit, mergeEvents, projectState, readSnapshot, readArtifact, readInside } from '../server/reader.mjs';
+import { catalog, parseState, parseAudit, mergeEvents, projectState, readSnapshot, readArtifact, readInside } from '../server/reader.mjs';
 import { createHandler } from '../server/api.mjs';
 
 const graph = [{ slug: 'functional-design', phase: 'construction', lead_agent: 'aidlc-architect-agent', support_agents: ['aidlc-developer-agent'], reviewer: 'aidlc-architecture-reviewer-agent', mode: 'inline' }];
@@ -77,6 +77,27 @@ async function fixture(t) {
   await writeFile(join(record,'construction/functional-design/functional-spec.md'),'# synthetic spec');
   return {root,record};
 }
+test('catalog rejects an oversized registry instead of silently hiding the active intent', async (t) => {
+  const {root} = await fixture(t);
+  const intents = Array.from({length: 201}, (_, index) => ({dirName: `intent-${index}`, status: index === 200 ? 'active' : 'completed'}));
+  await writeFile(join(root, 'aidlc/spaces/default/intents/intents.json'), JSON.stringify(intents));
+  await assert.rejects(catalog(root), /CATALOG_LIMIT/);
+});
+test('catalog rejects excess spaces instead of returning a partial project', async (t) => {
+  const {root} = await fixture(t);
+  await Promise.all(Array.from({length: 50}, (_, index) => mkdir(join(root, `aidlc/spaces/space-${index}`))));
+  await assert.rejects(catalog(root), /CATALOG_LIMIT/);
+});
+test('catalog rejects malformed registry rows and accepts its exact intent limit', async (t) => {
+  const {root} = await fixture(t);
+  const registry = join(root, 'aidlc/spaces/default/intents/intents.json');
+  for (const row of [null, 1, {}, {dirName: '../outside'}]) {
+    await writeFile(registry, JSON.stringify([row]));
+    await assert.rejects(catalog(root), /INVALID_REGISTRY/);
+  }
+  await writeFile(registry, JSON.stringify(Array.from({length: 200}, (_, index) => ({dirName: `intent-${index}`}))));
+  assert.equal((await catalog(root)).options.length, 200);
+});
 test('real file reads observe updates without writing source files',async(t)=>{
   const {root,record}=await fixture(t);
   const sourcePath=join(record,'aidlc-state.md');

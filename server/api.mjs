@@ -7,6 +7,7 @@ const errors = {
   UNKNOWN_INTENT: 'この作業は見つかりません。作業の一覧を更新してください。',
   INVALID_STATE: '工程の記録を読み取れませんでした。AI-DLC側の状態を確認してください。',
   INVALID_REGISTRY: '作業の一覧を読み取れませんでした。',
+  CATALOG_LIMIT: '作業の一覧が読み取り上限を超えています（Spaceは50件、各Spaceの作業は200件まで）。',
   STATE_CHANGING: '工程の記録が更新中です。少し待つと自動で再取得します。',
   FILE_LIMIT: '記録が読み取り上限を超えています。', AUDIT_LIMIT: '監査ファイルの数が読み取り上限を超えています。', ARTIFACT_LIMIT: '成果物の数が読み取り上限を超えています。',
   INVALID_PATH: 'この場所は読み取り対象外です。', INVALID_ARTIFACT: 'この成果物は読み取り対象外です。',
