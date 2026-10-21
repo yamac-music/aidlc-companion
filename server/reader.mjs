@@ -79,12 +79,17 @@ export async function catalog(projectRoot) {
   const project = await realpath(projectRoot);
   const spacesPath = resolve(project, 'aidlc/spaces');
   const spaces = await directories(spacesPath);
+  if (spaces.length > 50) throw new Error('CATALOG_LIMIT');
   const activeSpace = (await optional(project, 'aidlc/active-space'))?.trim();
   const options = [];
-  for (const space of spaces.slice(0, 50)) {
+  for (const space of spaces) {
     const registry = JSON.parse((await optional(project, `aidlc/spaces/${space}/intents/intents.json`)) ?? '[]');
     if (!Array.isArray(registry)) throw new Error('INVALID_REGISTRY');
-    for (const row of registry.slice(0, 200)) if (safeSegment(row.dirName)) options.push({ space, intent: row.dirName, label: typeof row.slug === 'string' ? row.slug : row.dirName, status: row.status ?? 'unknown' });
+    if (registry.length > 200) throw new Error('CATALOG_LIMIT');
+    for (const row of registry) {
+      if (!row || typeof row !== 'object' || !safeSegment(row.dirName)) throw new Error('INVALID_REGISTRY');
+      options.push({ space, intent: row.dirName, label: typeof row.slug === 'string' ? row.slug : row.dirName, status: row.status ?? 'unknown' });
+    }
   }
   const defaultSpace = spaces.includes(activeSpace) ? activeSpace : spaces[0];
   const activeIntent = defaultSpace ? (await optional(project, `aidlc/spaces/${defaultSpace}/intents/active-intent`))?.trim() : null;
